@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- XML을 사용하는 패키지 입력 : UserDAO -->
+<mapper namespace="com.study.board.bbs.BbsDAO">
+
+    <resultMap type="com.study.board.bbs.BbsTblVO" id="bbsMap">
+        <result property="seq"          column="SEQ" />
+        <result property="title"        column="TITLE" />
+        <result property="content"      column="CONTENT" />
+        <result property="regdate"      column="REGDATE" />
+        <result property="divi"         column="DIVI" />
+        <result property="userId"       column="USERID" />
+    </resultMap>
+    
+    <!-- return sqlSessionTemplate.selectList("selectBbsList", vo); -->
+    <select id="selectBbsList" resultMap="bbsMap">
+        SELECT * FROM BBS_TBL
+    </select>
+
+    <!-- <select id="selectBbsCount" resultMap="Integer">
+        SELECT COUNT(*) FROM BBS_TBL
+    </select> -->
+
+    <select id="selectOneUser" resultMap="bbsMap">
+        SELECT * FROM BBS_TBL WHERE USERID=#{userId} AND SEQ=#{seq}
+    </select>
+
+</mapper>

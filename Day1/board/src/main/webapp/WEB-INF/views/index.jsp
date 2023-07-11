@@ -10,20 +10,18 @@
     <hr>
     <div>
         <span>홍길동님 반갑습니다.</span>
-        <input type="button" id="login" setAttribute="로그인">
+        <input type="button" id="login" setAttribute="로그인" value="로그인">
     </div>
     <br>
     <!-- 테이블 구현 -->
     <table border="1" id="bbsTable">
         <thead>
-            <th>번호</th>
+            <th id="bt_seq">번호</th>
             <th>제목</th>
             <th>아이디</th>
             <th>날짜</th>
         </thead>
         <tbody>
-            
-
         </tbody>
     </table>
 
@@ -60,7 +58,8 @@
 
         const getBbs = function(page)
         {
-            // DOM
+            // 
+            // input-box DOM을 가지고 온다.
             const inputDivi = document.querySelector('#divi');
             const inputPageNum = document.querySelector('#pageNum');
 
@@ -70,24 +69,38 @@
 
             // form 데이터를 만든다.
             let formData = new FormData(bbsform);
+            const bbsTable = document.getElementById('bbsTable');
             
-            // 
             $.ajax({
-            data : formData,
-            type : 'POST',
-            url : '/bbs/list',
-            // 이 외 기본적으로 들어가는 값들
-            cache : false,
-            processData : false,
-            contentType : false,
-            success : function(data) {
-                alert(data);
-            }
-        });
+                data : formData,
+                type : 'POST',      // POST 방식으로
+                url : '/bbs/list',  // 여기에 전송
+                // 이 외 기본적으로 들어가는 값들
+                cache : false,
+                processData : false,
+                contentType : false,
+                success : function(data) {
 
-        }
+                    for (let i = 0; i < data.bbsList.length; i++)
+                    {
+                        const userId = data.bbsList[i].userId;
+                        const seq = data.bbsList[i].seq;
+
+                        $("#bbsTable > tbody:last").append("<tr><td>" + data.bbsList[i].seq +
+                                                    "</td><td><a href=/bbs/content?userId=" + userId + "&seq=" + seq + ">" + data.bbsList[i].title +
+                                                    "</a></td><td>" + data.bbsList[i].userId +
+                                                    "</td><td>" + data.bbsList[i].regdate + "</td></tr>");
+                    }
+                }
+            });
+        } 
 
         getBbs(1);
+
+        // 제목에는 a태그로 링크할 수 있게 생성
+
+        // document.getElementById('bt_seq').innerHTML = data.bbsList[i].seq;
+        
 
         // bbsform 내부 input 태그 두 개의 값을 세팅
         // 1. divi : C, pageNum : 1로 세팅
