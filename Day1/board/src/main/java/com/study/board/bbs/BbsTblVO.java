@@ -15,10 +15,10 @@ public class BbsTblVO {
     private String rowPerPage;  // 페이지 당 표현할 Row의 개수
     
     // 기본 속성
-    private String seq;
+    private int seq;
     private String title;
     private String content;
-    private String regdate;
+    private String regDate;
     private String divi;
     private String userId;
 

@@ -15,5 +15,11 @@ public class MainController {
     {
         return "index";
     }
+
+    // @GetMapping("/bbs/content")
+    // public String viewContent()
+    // {
+    //     return "bbs/content";
+    // }
     
 }

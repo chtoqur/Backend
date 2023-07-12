@@ -16,10 +16,12 @@
     <!-- 테이블 구현 -->
     <table border="1" id="bbsTable">
         <thead>
-            <th id="bt_seq">번호</th>
-            <th>제목</th>
-            <th>아이디</th>
-            <th>날짜</th>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>아이디</th>
+                <th>날짜</th>
+            </tr>
         </thead>
         <tbody>
         </tbody>
@@ -52,6 +54,7 @@
 
     // JQuery로 구현
     (()=>{
+        // $ : JQuery의 String 문법체계
         $('#login').click(()=>{
             alert('jquery-login');
         });
@@ -70,7 +73,7 @@
             // form 데이터를 만든다.
             let formData = new FormData(bbsform);
             const bbsTable = document.getElementById('bbsTable');
-            
+
             $.ajax({
                 data : formData,
                 type : 'POST',      // POST 방식으로
@@ -79,18 +82,53 @@
                 cache : false,
                 processData : false,
                 contentType : false,
+                // function(data) : 전체정보
                 success : function(data) {
 
+                    // 초기화
+                    // const tBody = document.querySelector('#bbsTable > tbody');
+                    // tBody.innerHTML = '';
+
+                    // for (let i = 0; i < data.bbsList.length; i++)
+                    // {
+                    //     const userId = data.bbsList[i].userId;
+                    //     const seq = data.bbsList[i].seq;
+
+                        // $("#bbsTable > tbody:last").append("<tr><td>" + data.bbsList[i].seq +
+                        //                             "</td><td><a href=/bbs/content?userId=" + data.bbsList[i].userId + "&seq=" +
+                        //                                 data.bbsList[i].seq + ">" + data.bbsList[i].title +
+                        //                             "</a></td><td>" + data.bbsList[i].userId +
+                        //                             "</td><td>" + data.bbsList[i].regdate + "</td></tr>");
+                        // }
+
+                    // way2
+                    // 1. tbody를 가지고 온 후 초기화
+                    // 초기화를 시키지 않을 경우 page2 이상에서는 기존에 있는 내용에 덧붙여서 출력됨
+                    let bstr = '';
+                    const tBody = document.querySelector('#bbsTable > tbody');
+                    console.log(tBody);
+                    tBody.innerHTML = '';   // 초기화
+
+                    // // 2. tbody 생성
+                    // data.bbsList는 서버에서 날아올 때 JSON 형식으로 만들어져 있기 때문에
+                    // 객체 방식으로 받아서 사용할 수 있음
                     for (let i = 0; i < data.bbsList.length; i++)
                     {
-                        const userId = data.bbsList[i].userId;
-                        const seq = data.bbsList[i].seq;
-
-                        $("#bbsTable > tbody:last").append("<tr><td>" + data.bbsList[i].seq +
-                                                    "</td><td><a href=/bbs/content?userId=" + userId + "&seq=" + seq + ">" + data.bbsList[i].title +
-                                                    "</a></td><td>" + data.bbsList[i].userId +
-                                                    "</td><td>" + data.bbsList[i].regdate + "</td></tr>");
+                        bstr = '';  // 초기화
+                        bstr += '<tr>';
+                            bstr += '<td>' + (i + 1) + '</td>'
+                            bstr += '<td><a href="/bbs/content?userId=' + data.bbsList[i].userId + '&seq=' + data.bbsList[i].seq + '">' +
+                                    data.bbsList[i].title + '</a></td>'
+                            bstr += '<td>' + data.bbsList[i].userId + '</td>'
+                            bstr += '<td>' + data.bbsList[i].regDate + '</td>'
+                        bstr += '</tr>';
+                        
+                        tBody.innerHTML += bstr;
                     }
+
+                    // 3. 
+
+
                 }
             });
         } 

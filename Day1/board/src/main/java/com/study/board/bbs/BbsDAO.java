@@ -24,8 +24,10 @@ public class BbsDAO {
     }
 
     // 관련 내용 추가
-    public BbsTblVO selectOneUser(BbsTblVO vo) throws Exception
+    public BbsTblVO selectBbsContent(BbsTblVO vo) throws Exception
     {
-        return sqlSessionTemplate.selectOne("selectOneUser", vo);
+        // 이 문자열로 가보면 너가 원하는 정보를 얻을 수 있다고
+        // MyBatis에게 알려주는 것 ("selectOneUser")
+        return sqlSessionTemplate.selectOne("selectBbsContent", vo);
     }
 }

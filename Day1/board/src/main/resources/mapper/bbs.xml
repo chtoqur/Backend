@@ -7,7 +7,7 @@
         <result property="seq"          column="SEQ" />
         <result property="title"        column="TITLE" />
         <result property="content"      column="CONTENT" />
-        <result property="regdate"      column="REGDATE" />
+        <result property="regDate"      column="REGDATE" />
         <result property="divi"         column="DIVI" />
         <result property="userId"       column="USERID" />
     </resultMap>
@@ -17,12 +17,12 @@
         SELECT * FROM BBS_TBL
     </select>
 
+    <select id="selectBbsContent" resultMap="bbsMap">
+        SELECT * FROM BBS_TBL WHERE USERID=#{userId} AND SEQ=#{seq}
+    </select>
+
     <!-- <select id="selectBbsCount" resultMap="Integer">
         SELECT COUNT(*) FROM BBS_TBL
     </select> -->
-
-    <select id="selectOneUser" resultMap="bbsMap">
-        SELECT * FROM BBS_TBL WHERE USERID=#{userId} AND SEQ=#{seq}
-    </select>
 
 </mapper>

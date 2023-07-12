@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @Controller
 public class BbsController {
     
@@ -31,17 +30,31 @@ public class BbsController {
 
         // 결과를 MstVO에 저장하고 이것을 클라이언트에게 전송한다.
         mstvo.setBbsList(list);
+
         return mstvo;
 
         // 컨트롤러 수정
     }
 
     @GetMapping("/bbs/content")
-    public String contents(@ModelAttribute("BbsTblVO") BbsTblVO vo, Model model) throws Exception
+    public String viewContent (@ModelAttribute("BbsTblVO") BbsTblVO vo,
+                                Model model) throws Exception 
     {
-        BbsTblVO resultVO = bbsDao.selectOneUser(vo);
-        model.addAttribute("content", resultVO.getContent());
+        // 1. 파라미터를 통해 클라이언트로부터 userId와 seq를 받는다.
+        // 2. 쿼리를 DB에 던져서(DAO) 결과를 가지고 온다.
+        // SELECT * FROM BBS_TBL WHERE userid='userid' AND seq = seq;
+        
+        BbsTblVO resultVO = bbsDao.selectBbsContent(vo);
+        // JSP가 받은 값을 인식할 수 있는 이름 "vo"
+        model.addAttribute("vo", resultVO);
 
-        return "bbsContent";
+        // System.out.println(vo.getUserId());
+        // System.out.println(vo.getSeq());
+
+        // System.out.println(resultVO.getTitle());
+        // System.out.println(resultVO.getContent());
+
+
+        return "bbs/content";
     }
 }
