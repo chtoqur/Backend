@@ -9,7 +9,7 @@
     <h1>Main BBS</h1>
     <hr>
     <div>
-        <span>홍길동님 반갑습니다.</span>
+        <!-- <span>홍길동님 반갑습니다.</span> -->
         <input type="button" id="login" setAttribute="로그인" value="로그인">
     </div>
     <br>
