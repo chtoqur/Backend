@@ -24,9 +24,16 @@ public class UserDAO {
         return sqlSessionTemplate.selectOne("selectOneUser", vo);
     }
 
+    // 아이디 중복확인
     public UserTblVO selectOneUserById(UserTblVO vo) throws Exception
     {
         return sqlSessionTemplate.selectOne("selectOneUserById", vo);
+    }
+
+    // 이메일로 아이디 찾기
+    public UserTblVO selectOneUserByEmail(UserTblVO vo) throws Exception
+    {
+        return sqlSessionTemplate.selectOne("selectOneUserByEmail", vo);
     }
 
     public int insertOneUser(UserTblVO vo) throws Exception

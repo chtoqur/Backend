@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.study.board.common.GmailSender;
 import com.study.board.common.SessionUtil;
 import com.study.board.user.UserDAO;
 import com.study.board.user.UserTblVO;
@@ -118,8 +119,77 @@ public class MainController {
         {
             return "FAIL";
         }
-
     }
 
+    @GetMapping("/idinquery")
+    public String idinquery()
+    {
+        return "idinquery";
+    }
+
+
+
+    @PostMapping("/idinquery")
+    @ResponseBody
+    public String idinquery(@ModelAttribute("UserTblVO") UserTblVO vo) throws Exception
+    {
+        UserTblVO resultVO = userDAO.selectOneUserByEmail(vo);
+        
+        if (resultVO == null)
+        {
+            
+            return "$NOUSER";
+        }
+        else
+        {
+            //id를 가공한다.
+            String id = resultVO.getUserId();
+            String editedId = id.substring(0, id.length() - 1) + "*";
+
+            return editedId;
+        }
+    
+    }
+
+    @GetMapping("/pwinquery")
+    public String pwinquery()
+    {
+        return "pwinquery";
+    }
+
+    @PostMapping("/pwinquery")
+    @ResponseBody
+    public String pwinquery(@ModelAttribute("UserTblVO") UserTblVO vo) throws Exception
+    {
+        UserTblVO resultVO = userDAO.selectOneUserById(vo);
+
+        String senderName = "chtoqur@gmail.com";
+        String senderPasswd = "jciisnugzlibtlcg";
+
+        // Gmail 인스턴스 생성
+        GmailSender gmailSender = null;
+        
+        if (resultVO == null)
+        {
+            return "$NOUSER";
+        }
+        else
+        {
+            gmailSender = new GmailSender(senderName, senderPasswd);
+            // 파라메터
+            // 1param : 받을 사람의 이메일 주소
+            // 2param : 이메일 제목
+            // 3param : 이메일 내용
+            gmailSender.sendEmail(resultVO.getEmail(), "비밀번호 입니다.", "비밀번호 : " + resultVO.getUserPw());
+            return "$OK";
+        }
+    
+    }
+
+    @GetMapping("/postalcode")
+    public String postalcode()
+    {
+        return "postalcode";
+    }
 
 }

@@ -36,7 +36,7 @@
     </div>
 
 <script src="/JS/jquery-3.7.0.min.js"></script>
-<script>
+<script type="text/javascript">
 (()=>{
 
     // 메세지 핸들러
@@ -69,37 +69,77 @@
     ////////////////////////////// 이벤트 핸들러 영역 //////////////////////////////
 
     btnLogin.addEventListener('click', ()=>{
+
+        let requestData = {
+            userId : userId.value,
+            userPw : userPw.value
+        };
+
+        // XMLHttpRequest : JS에서 서버와 비동기 통신을 가능하게 하는 객체
+        // 이를 통해 웹 페이지의 전체 새로고침 없이 서버와 데이터 주고받기 가능
+        const httpRequest = new XMLHttpRequest();
         
-        if (true == checkInputStatus())
+        httpRequest.onreadystatechange = function()
         {
-            let requestData = {
-                userId : userId.value,
-                userPw : userPw.value
-            };
-    
-            console.log(requestData);
-    
-            $.ajax({
-                url : '/login',
-                type : 'POST',
-                data : requestData,
-                success : function(data)
+            // 서버의 응답에 따른 로직 작성 공간
+
+            if(httpRequest.readyState === XMLHttpRequest.DONE)
+            {
+                if (httpRequest.status === 200)
                 {
-                    if (data === "OK")
-                    {
-                        location.href = "/index";
-                    }
-                    else if ((data === "FAIL"))
-                    {
-                        alert("존재하지 않는 계정입니다. 아이디와 패스워드를 확인해주세요.");
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    console.log("성공!");
                 }
-            });
+                else
+                {
+                    console.log(httpRequest.response);
+                }
+            }
         }
+
+        // 매개변수
+        // 1. GET-POST방식 2. URL, 3. 비동기(true)-동기(false) 여부
+        httpRequest.open('POST', '/login', true);
+        httpRequest.responseType = "json";
+
+        // setRequestHeader : HTTP 요청의 헤더 설정에 사용
+        // 헤더는 클라이언트가 서버로 보내는 요청에 추가 정보를 포함시킬 때 사용
+        // 1. 설정할 헤더의 이름, 2. 해당 헤더에 설정할 값
+        // Content-Type 헤더 설정 (JSON 데이터를 전송할 경우)
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send(JSON.stringify(requestData));
+    
+        // /////////////////////////////////
+        
+        // if (true == checkInputStatus())
+        // {
+        //     let requestData = {
+        //         userId : userId.value,
+        //         userPw : userPw.value
+        //     };
+    
+        //     console.log(requestData);
+    
+        //     $.ajax({
+        //         url : '/login',
+        //         type : 'POST',
+        //         data : requestData,
+        //         success : function(data)
+        //         {
+        //             if (data === "OK")
+        //             {
+        //                 location.href = "/index";
+        //             }
+        //             else if ((data === "FAIL"))
+        //             {
+        //                 alert("존재하지 않는 계정입니다. 아이디와 패스워드를 확인해주세요.");
+        //             }
+        //             else
+        //             {
+        //                 return;
+        //             }
+        //         }
+        //     });
+        // }
     });
 
     btnIndex.addEventListener('click', ()=>{
@@ -111,11 +151,11 @@
     });
 
     btnFindId.addEventListener('click', ()=>{
-
+        location.href = '/idinquery';
     });
 
     btnFindPw.addEventListener('click', ()=>{
-
+        location.href = '/pwinquery';
     });
 
 

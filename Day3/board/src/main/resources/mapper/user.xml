@@ -8,6 +8,7 @@
         <result property="userPw"       column="USERPW" />
         <result property="email"        column="EMAIL" />
         <result property="name"         column="NAME" />
+        <result property="address"      column="ADDRESS" />
     </resultMap>
 
     <!-- id에 해당하는 쿼리를 날렸을 때 userMap에 가서 매핑하라는 정보 -->
@@ -27,9 +28,13 @@
     </select>
 
     <insert id="insertOneUser">
-        INSERT INTO USER_TBL(USERID, USERPW, EMAIL, NAME) VALUES
-        (#{userId}, #{userPw}, #{email}, #{name})
+        INSERT INTO USER_TBL(USERID, USERPW, EMAIL, NAME, ADDRESS) VALUES
+        (#{userId}, #{userPw}, #{email}, #{name}, #{address})
     </insert>
+
+    <select id="selectOneUserByEmail" resultMap="userMap">
+        SELECT * FROM USER_TBL WHERE EMAIL=#{email}
+    </select>
 
     
 </mapper>

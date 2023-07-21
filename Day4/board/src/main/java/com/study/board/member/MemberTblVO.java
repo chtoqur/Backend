@@ -11,4 +11,5 @@ public class MemberTblVO {
     private String name;
     private String email;
     private String grade;
+    
 }
