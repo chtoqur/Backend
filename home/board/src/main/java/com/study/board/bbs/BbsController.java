@@ -2,6 +2,10 @@ package com.study.board.bbs;
 
 import java.util.List;
 
+import javax.mail.Session;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +22,7 @@ import com.study.board.user.UserTblVO;
 
 @Controller
 public class BbsController {
+    
     @Autowired
     BbsDAO bbsDAO;
     
@@ -85,17 +90,20 @@ public class BbsController {
 
     @RequestMapping(value = "/bbs/newcontent", method = RequestMethod.POST)
     @ResponseBody
-    public String newContent(@RequestBody BbsTblVO vo) throws Exception
+    public int newContent(@RequestBody BbsTblVO vo, HttpServletRequest request) throws Exception
     {
         int updateCount = bbsDAO.insertBbsContent(vo);
         
         if (updateCount == 1)
         {
-            return "OK";
+            BbsMstVO bbsMstVO = new BbsMstVO();
+            int rowCount = bbsDAO.selectBbsRowCount();
+            bbsMstVO.setRowCount(rowCount);
+            return rowCount;
         }
         else
         {
-            return "FAIL";
+            return -1;
         }
     }
 

@@ -47,6 +47,7 @@
     let rowsPerPage = 5;        // 페이지 당 건수 (테이블에서 보여지는 최대 건수)
     let curPage = 0;            
     let totalPage = 0;          // 전체 페이지 넘버
+    let page = '${page}';             // 해당 변수 넘버에 따라서 페이지 동적 변화
 
     // 섹션 관련 정보
     let curSection = 0;         // 현재 섹션 (다음 버튼 = 증가, 이전 버튼 = 감소)
@@ -196,7 +197,6 @@
             // }
         // });
 
-
     }
 
     // 실제 적용해야 할 페이지를 구하는 함수
@@ -205,6 +205,64 @@
         return (curSection * pagesPerSection) + pageOffset;
     }
 
+    // const setPageBtn = function()
+    // {
+    //     rowCount = '${rowCount}';
+    //     curSection = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
+    //     console.log("curSection = " + curSection);
+    //     console.log("rowCount = " + rowCount);
+
+    //     setPageBtnNum();
+    //     hidddenBtn();
+    // }
+
+    const setPageBtnNum = function()
+    {
+        // 하단 숫자 버튼 변경
+        let count = 1;
+
+        for (let i = 0; i < btns.length; i++)
+        {
+            btns[i].textContent = getRealPage(count);
+            count++;
+        }
+    }
+
+    const hidddenBtn = function()
+    {
+        // 버튼 히든
+        totalPage = Math.ceil(rowCount / rowsPerPage) - 1;
+        totalSectionNum = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
+
+        if (curSection == totalSectionNum)
+        {
+            let deleteBtn = ((totalSectionNum + 1) * pagesPerSection) - (totalPage + 1);
+            let startIndex = pagesPerSection - deleteBtn;
+            
+            if (deleteBtn > 0)
+            {
+                for (let i = startIndex; i < pagesPerSection; i++)
+                {
+                    btns[i].style.display = 'none';
+                }
+            }
+        }
+    }
+
+    const displayBtn = function()
+    {
+        // 버튼 히든 해제
+        let deleteBtn = ((totalSectionNum + 1) * pagesPerSection) - (totalPage + 1);
+        let startIndex = pagesPerSection - deleteBtn;
+
+        if (deleteBtn > 0)
+        {
+            for (let i = startIndex; i < pagesPerSection; i++)
+            {
+                btns[i].style.display = 'inline';
+            }
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// 이벤트 핸들러 영역 //////////////////////////////
@@ -252,31 +310,15 @@
         let realPage = getRealPage(0);
         setBBS(realPage);
 
-        // 하단 숫자 버튼 변경
-        let count = 1;
+        setPageBtnNum();
 
-        for (let i = 0; i < btns.length; i++)
-        {
-            btns[i].textContent = getRealPage(count);
-            count++;
-        }
-
-        // 버튼 히든 해제
         totalPage = Math.ceil(rowCount / rowsPerPage) - 1;
         totalSectionNum = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
 
+        // 버튼 복귀
         if (curSection == (totalSectionNum - 1))
         {
-            let deleteBtn = ((totalSectionNum + 1) * pagesPerSection) - (totalPage + 1);
-            let startIndex = pagesPerSection - deleteBtn;
-
-            if (deleteBtn > 0)
-            {
-                for (let i = startIndex; i < pagesPerSection; i++)
-                {
-                    btns[i].style.display = 'inline';
-                }
-            }
+            displayBtn();
         }
         
     });
@@ -299,30 +341,15 @@
         setBBS(realPage);
 
         // 하단 숫자 버튼 변경
-        let count = 1;
+        setPageBtnNum();
 
-        for (let i = 0; i < btns.length; i++)
-        {
-            btns[i].textContent = getRealPage(count);
-            count++;
-        }
-
-        // 버튼 히든
         totalPage = Math.ceil(rowCount / rowsPerPage) - 1;
         totalSectionNum = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
 
+        // 버튼 숨기기
         if (curSection == totalSectionNum)
         {
-            let deleteBtn = ((totalSectionNum + 1) * pagesPerSection) - (totalPage + 1);
-            let startIndex = pagesPerSection - deleteBtn;
-            
-            if (deleteBtn > 0)
-            {
-                for (let i = startIndex; i < pagesPerSection; i++)
-                {
-                    btns[i].style.display = 'none';
-                }
-            }
+            hidddenBtn();
         }
 
     });
@@ -363,7 +390,8 @@
     setsessionState();      // 세션이 있는지 없는지 상태값을 저장
     setWelcomeMsg();        // 웰컴 메세지 설정
     setLoginButton();       // 로그인-로그아웃 버튼 설정
-    setBBS(0);
+    setBBS(page);
+    // setPageBtn();
 
 })(); 
 </script>

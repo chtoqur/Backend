@@ -76,12 +76,14 @@
 
             if (httpRequest.status === 200)
             {
-                let responseText = httpRequest.responseText;
+                let rowCount = Number(httpRequest.responseText);
 
-                if (responseText === "OK")
+                if (rowCount > 0)
                 {
                     alert("등록되었습니다.");
-                    location.href = '/index';
+                    let newPage = Math.ceil(rowCount / 5) - 1;
+                    // console.log(newPage);
+                    location.href = '/index?page=' + newPage;
                 }
                 else
                 {
