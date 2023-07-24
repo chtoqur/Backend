@@ -82,7 +82,6 @@
                 {
                     alert("등록되었습니다.");
                     let newPage = Math.ceil(rowCount / 5) - 1;
-                    // console.log(newPage);
                     location.href = '/index?page=' + newPage;
                 }
                 else
