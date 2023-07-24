@@ -47,7 +47,7 @@
     let rowsPerPage = 5;        // 페이지 당 건수 (테이블에서 보여지는 최대 건수)
     let curPage = 0;            
     let totalPage = 0;          // 전체 페이지 넘버
-    let page = '${page}';             // 해당 변수 넘버에 따라서 페이지 동적 변화
+    let page = '${page}';       // 해당 변수 넘버에 따라서 페이지 동적 변화
 
     // 섹션 관련 정보
     let curSection = 0;         // 현재 섹션 (다음 버튼 = 증가, 이전 버튼 = 감소)
@@ -196,7 +196,6 @@
         //         }
             // }
         // });
-
     }
 
     // 실제 적용해야 할 페이지를 구하는 함수
@@ -205,17 +204,17 @@
         return (curSection * pagesPerSection) + pageOffset;
     }
 
-    // const setPageBtn = function()
-    // {
-    //     rowCount = '${rowCount}';
-    //     curSection = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
-    //     console.log("curSection = " + curSection);
-    //     console.log("rowCount = " + rowCount);
+    // 글 수정 시 하단 버튼 해당 페이지에 일치하도록 설정
+    const setPageBtn = function()
+    {
+        rowCount = '${rowCount}';
+        curSection = Math.floor(page / pagesPerSection);
 
-    //     setPageBtnNum();
-    //     hidddenBtn();
-    // }
+        setPageBtnNum();
+        hidddenBtn();
+    }
 
+    // 버튼 별 넘버 설정
     const setPageBtnNum = function()
     {
         // 하단 숫자 버튼 변경
@@ -230,7 +229,7 @@
 
     const hidddenBtn = function()
     {
-        // 버튼 히든
+        // 버튼 히든 처리
         totalPage = Math.ceil(rowCount / rowsPerPage) - 1;
         totalSectionNum = Math.ceil(rowCount / rowsPerPage / pagesPerSection) - 1;
 
@@ -332,7 +331,7 @@
         let nextRowCount = rowCount - (rowsPerSection * (curSection + 1));
         if (nextRowCount <= 0)
         {
-            alert("다음 내용은 없습니다.");
+            alert("마지막 섹션입니다.");
             return;
         }
 
@@ -384,14 +383,26 @@
         setBBS(realPage);
     });
 
-
     //////////////////////////////////////////////////////////
     ///////////////////////// 호출부 /////////////////////////
     setsessionState();      // 세션이 있는지 없는지 상태값을 저장
     setWelcomeMsg();        // 웰컴 메세지 설정
     setLoginButton();       // 로그인-로그아웃 버튼 설정
     setBBS(page);
-    // setPageBtn();
+    setPageBtn();
+
+    // F5 키보드 키다운 시 GET 파라미터 제거
+    // 마우스로 새로고침 시 : 코드 수정 필요
+    window.onkeydown = function()
+    {
+        let kcode = event.keyCode;
+        // 키보드 아스키 코드 '116' = F5
+        if (kcode == 116)
+        {
+            // 파라미터 제거
+            history.replaceState({}, null, location.pathname);
+        }
+    }
 
 })(); 
 </script>

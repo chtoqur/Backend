@@ -70,13 +70,16 @@
 
     btnLogin.addEventListener('click', ()=>{
 
+        if (false === checkInputStatus())
+            return;
+
         // XMLHttpRequest : JS에서 서버와 비동기 통신을 가능하게 하는 객체
         // 이를 통해 웹 페이지의 전체 새로고침 없이 서버와 데이터 주고받기 가능
         // 1. XMLHttpRequest 객체 생성
         const httpRequest = new XMLHttpRequest();
 
         // 2. HTTP 요청 초기화
-        // 1) METHOD 2) URL
+        //               1) METHOD 2) URL
         httpRequest.open('POST', '/login');
 
         // 3. HTTP 요청 헤더 설정
@@ -93,7 +96,6 @@
             if (httpRequest.status === 200)
             {
                 location.href = "/index";
-                // console.log("성공!");
             }
             else
             {
