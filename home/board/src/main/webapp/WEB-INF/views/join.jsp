@@ -46,8 +46,9 @@
     </table>
     <br>
     <button type="button" style="width: 300px;" id="btnJoin">회원가입</button>
-      
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!-- CDM 방식 script src -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/JS/jquery-3.7.0.min.js"></script>
 <script>
     function execDaumPostcode() {
@@ -213,17 +214,21 @@
         
         if (txtUserId.value.length > 0)
         {
-            let requestData = {
-            userId : txtUserId.value
-            }
+            let httpRequest = new XMLHttpRequest();
+            httpRequest.open('POST', '/idChecking', true);
+            httpRequest.setRequestHeader('content-type', 'application/json');
+            
+            // httpRequest의 상태가 바뀌었을 때 콜백함수 호출
+            httpRequest.onreadystatechange = function()
+            {
+                if(httpRequest.readyState !== XMLHttpRequest.DONE)
+                    return;
 
-            $.ajax({
-                url : '/idChecking',
-                type : 'POST',
-                data : requestData,
-                success : function(data)
+                if (httpRequest.status === 200)
                 {
-                    if (data === "OK")
+                    let result = httpRequest.responseText;
+
+                    if (result == "OK")
                     {
                         alert("사용할 수 있는 아이디입니다.");
                         idChecking = true;
@@ -238,7 +243,40 @@
                         txtUserId.focus();
                     }
                 }
-            })
+                else
+                {
+                    console.error(httpRequest.status, httpRequest.statusText);
+                }
+            }
+
+            let requestData = {
+            userId : txtUserId.value
+            }
+
+            httpRequest.send(JSON.stringify(requestData));
+
+            // $.ajax({
+            //     url : '/idChecking',
+            //     type : 'POST',
+            //     data : requestData,
+            //     success : function(data)
+            //     {
+            //         if (data === "OK")
+            //         {
+            //             alert("사용할 수 있는 아이디입니다.");
+            //             idChecking = true;
+            //             checkedId = txtUserId.value;
+            //             txtUserPw.focus();
+            //         }
+            //         else
+            //         {
+            //             alert("이미 가입된 아이디가 있습니다. 다른 아이디를 입력해주세요.");
+            //             idChecking = false;
+            //             txtUserId.value = '';
+            //             txtUserId.focus();
+            //         }
+            //     }
+            // })
         }
         else
         {
@@ -253,17 +291,25 @@
         if (false === checkJoinData())
             return;
 
-        const httpRequest = new XMLHttpRequest();
-        
-        httpRequest.open('POST', '/join');
+        // XMLHttpRequest : 서버와 통신을 수행하는 객체
+        let httpRequest = new XMLHttpRequest();
+                    // 1. method 2. URL 3. async(비동기:true / 동기:false) 
+        httpRequest.open('POST', '/join', true);
+
+        // HTTP 요청 헤더의 필수 정보 세팅
+        // 컨텐츠 타입을 JSON 형식으로 처리하겠다고 설정됨
         httpRequest.setRequestHeader('content-type', 'application/json');
         
+        // httpRequest의 상태가 바뀌었을 때 콜백함수 호출
         httpRequest.onreadystatechange = function()
         {
             // 서버의 응답에 따른 로직 작성
+
+            // Request가 완료되지 않았을 때는 return
             if(httpRequest.readyState !== XMLHttpRequest.DONE)
                 return;
 
+            // 서버에서 통신에 성공했을 때 200
             if (httpRequest.status === 200)
             {
                 let result = httpRequest.responseText;

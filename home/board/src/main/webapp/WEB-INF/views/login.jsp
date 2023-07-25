@@ -2,16 +2,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login</title>
+
+    <style>
+        h1 {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        li {
+            list-style-type: none;
+        }
+        li::before {
+            display: inline-block;
+            content: "";
+            width: 1px;
+            height: 10px;
+            background-color: #e1e1e1;
+            margin-right: 10px;
+        }
+        li::after {
+            content: "";
+            color: rgb(206, 212, 218);
+        }
+        li:last-child::after {
+            content: "";
+        }
+        .login-container {
+            border: 1px solid rgb(206, 212, 218);
+            border-radius: 10px;
+            width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .my-button {
+            width: 100%;
+            height: 50px;
+        }
+        .sub-container {
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Login</h1>
+    
+    <h1>LOGIN</h1>
+    <div class="login-container">
+        <div class="form-floating mb-2">
+            <input type="text" class="form-control" id="txtUserId" placeholder="#">
+            <label for="txtUserId">ID</label>
+        </div>
+        <div class="form-floating mb-2">
+            <input type="password" class="form-control" id="txtUserPw" placeholder="#">
+            <label for="txtUserPw">Password</label>
+        </div>
+
+        <button type="button" class="btn btn-success my-button" id="btnLogin">LOGIN</button>
+    </div>
+
+    <div class="d-flex justify-content-between sub-container">
+        <button type="button" class="btn btn-link">비밀번호 찾기</button>
+        <li></li>
+        <button type="button" class="btn btn-link">아이디 찾기</button>
+        <li></li>
+        <button type="button" class="btn btn-link">회원가입</button>
+    </div>
+
+
+    <br>
+    <br>
 
     <!-- ID/PW와 인풋 사이 마진 조절을 위해 table 테크닉-->
-    <table>
+    <!-- <table>
         <tr>
-            <!-- name은 서버에서 인식하는 이름, id는 jsp 내부 페이지 인식용 -->
+            name은 서버에서 인식하는 이름, id는 jsp 내부 페이지 인식용
             <td><label for="userId">아이디</label></td>
             <td><input type="text" name="userId" id="userId"></td>
         </tr>
@@ -20,7 +88,7 @@
             <td><label for="userPw">패스워드</label></td>
             <td><input type="text" name="userPw" id="userPw"></td>
         </tr>
-    </table>
+    </table> -->
 
     <!-- button의 디폴트 기능은 submit이기 때문에 사용자가 수동 핸들하기 위해서
          button이라고 명시적으로 하는 것이 좋음 -->
@@ -36,6 +104,8 @@
     </div>
 
 <script src="/JS/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 (()=>{
 
@@ -49,8 +119,8 @@
     const btnFindPw = document.querySelector('#btnFindPw');
     
     const frmLogin = document.querySelector('#frmLogin');
-    const userId = document.querySelector('#userId');
-    const userPw = document.querySelector('#userPw');
+    const userId = document.querySelector('#txtUserId');
+    const userPw = document.querySelector('#txtUserPw');
     
     const checkInputStatus = function()
     {

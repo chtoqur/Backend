@@ -85,7 +85,7 @@ public class MainController {
 
 
     // 아이디 패스워드를 넘겨서 로그인을 실제로 처리해달라는 요청
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping("/login")
     @ResponseBody
     public String login(@RequestBody UserTblVO vo, HttpServletRequest request, Model model) throws Exception
     {
@@ -120,7 +120,7 @@ public class MainController {
 
     @PostMapping("/idChecking")
     @ResponseBody
-    public String idChecking(@ModelAttribute("UserTblVO") UserTblVO vo) throws Exception
+    public String idChecking(@RequestBody UserTblVO vo) throws Exception
     {
         // 1. 넘어온 데이터(ID값)와 일치하는 유저가 DB에 존재하는지 확인
         UserTblVO resultVO = userDAO.selectOneUserById(vo);
@@ -137,7 +137,7 @@ public class MainController {
         }
     }
 
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @PostMapping("/join")
     @ResponseBody
     public String join(@RequestBody UserTblVO vo) throws Exception
     {
@@ -159,7 +159,7 @@ public class MainController {
         return "idinquery";
     }
 
-    @RequestMapping(value = "/idinquery", method = RequestMethod.POST)
+    @PostMapping("/idinquery")
     @ResponseBody
     public String idinquery(@RequestBody UserTblVO vo) throws Exception
     {
@@ -187,7 +187,7 @@ public class MainController {
         return "pwinquery";
     }
 
-    @RequestMapping(value = "/pwinquery", method = RequestMethod.POST)
+    @PostMapping("pwinquery")
     @ResponseBody
     public String pwinquery(@RequestBody UserTblVO vo) throws Exception
     {
@@ -220,6 +220,19 @@ public class MainController {
     public String postalcode()
     {
         return "postalcode";
+    }
+
+    @GetMapping("/bstest")
+    public String bstest()
+    {
+        return "bstest";
+    }
+
+    // 추후 삭제
+    @GetMapping("/table")
+    public String table()
+    {
+        return "table";
     }
 
 }

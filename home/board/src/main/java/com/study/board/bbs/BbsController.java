@@ -25,8 +25,7 @@ public class BbsController {
     
     @Autowired
     BbsDAO bbsDAO;
-    
-    @RequestMapping(value = "/bbs/list", method = RequestMethod.POST)
+    @PostMapping("/bbs/list")
     @ResponseBody
     public BbsMstVO bbsList(@RequestBody BbsTblVO vo) throws Exception
     {
@@ -62,7 +61,7 @@ public class BbsController {
         return "/bbs/content";
     }
 
-    @RequestMapping(value = "/bbs/content", method = RequestMethod.POST)
+    @PostMapping("/bbs/content")
     @ResponseBody
     public String content(@RequestBody BbsTblVO vo) throws Exception
     {
@@ -88,7 +87,7 @@ public class BbsController {
         return "/bbs/newcontent";
     }
 
-    @RequestMapping(value = "/bbs/newcontent", method = RequestMethod.POST)
+    @PostMapping("/bbs/newcontent")
     @ResponseBody
     public int newContent(@RequestBody BbsTblVO vo, HttpServletRequest request) throws Exception
     {

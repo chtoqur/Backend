@@ -31,7 +31,7 @@ public class BookController {
         URI uri = UriComponentsBuilder
         .fromUriString("https://openapi.naver.com")
         .path("/v1/search/book.json")
-        .queryParam("query", "조이")
+        .queryParam("query", "그린팩토리")
         .queryParam("display", 10)
         .queryParam("start", 1)
         .queryParam("sort", "sim")
