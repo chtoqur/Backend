@@ -31,23 +31,23 @@ public class MainController {
     @Autowired
     BbsDAO bbsDAO;
 
-    // @GetMapping("/index")
-    // public String index(Model model) throws Exception
-    // {
-    //     // 1. index를 요청한 대상에 세션이 존재하는지 여부 확인
-    //     //    USER라는 대상의 VO를 가져옴
-    //     UserTblVO userTblVO = (UserTblVO)SessionUtil.getAttribute("USER");
+    @GetMapping("/index")
+    public String index(Model model) throws Exception
+    {
+        // 1. index를 요청한 대상에 세션이 존재하는지 여부 확인
+        //    USER라는 대상의 VO를 가져옴
+        UserTblVO userTblVO = (UserTblVO)SessionUtil.getAttribute("USER");
 
-    //     if (userTblVO != null)
-    //     {
-    //         // 2-1. 세션O : model에 사용자 정보 저장 후 index.jsp로 전송
-    //         model.addAttribute("vo", userTblVO);
-    //     }
+        if (userTblVO != null)
+        {
+            // 2-1. 세션O : model에 사용자 정보 저장 후 index.jsp로 전송
+            model.addAttribute("vo", userTblVO);
+        }
 
-    //     // 2-2. 세션X : 정보 전송 없이 index.jsp 전송
+        // 2-2. 세션X : 정보 전송 없이 index.jsp 전송
 
-    //     return "index";
-    // }
+        return "index";
+    }
 
     @GetMapping("/index")
     public String movePage(@RequestParam(defaultValue = "0") int page, Model model) throws Exception
